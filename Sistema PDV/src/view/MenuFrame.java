@@ -29,19 +29,21 @@ public class MenuFrame extends JFrame{
 	private JButton comprar;
 	private JButton relatorio;
 	private JButton sair;
+	private FuncionarioModel funcionario;
 	
 	
 	public MenuFrame(FuncionarioModel funcionario) {
+		this.funcionario = funcionario;
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.getContentPane().setBackground(new Color(50, 50, 50));
         this.setLayout(new GridBagLayout());
         
-        this.renderizarComponentes(funcionario);
+        this.renderizarComponentes();
         
         this.setVisible(true);
 	}
 	
-	public void renderizarComponentes(FuncionarioModel funcionario) {
+	public void renderizarComponentes() {
 		if(funcionario.getTipo().equals("gerente")) {
 			showFullFrame(funcionario);
 		}else{
@@ -73,7 +75,7 @@ public class MenuFrame extends JFrame{
         buscarProduto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	goToBuscarProdutoFrame(funcionario);
+            	goToBuscarProdutoFrame();
             }
         });
         buscarProduto.setBackground(new Color(130, 87, 229));
@@ -88,7 +90,7 @@ public class MenuFrame extends JFrame{
         comprar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	goToComprasFrame(funcionario);
+            	goToComprasFrame();
             }
         });
         comprar.setBackground(new Color(130, 87, 229));
@@ -169,7 +171,7 @@ public class MenuFrame extends JFrame{
         buscarProduto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	goToBuscarProdutoFrame(funcionario);
+            	goToBuscarProdutoFrame();
             }
         });
         buscarProduto.setBackground(new Color(130, 87, 229));
@@ -184,7 +186,7 @@ public class MenuFrame extends JFrame{
         buscarFuncionario.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	goToBuscarFuncionarioFrame(funcionario);
+            	goToBuscarFuncionarioFrame();
             }
         });
         buscarFuncionario.setBackground(new Color(130, 87, 229));
@@ -199,7 +201,7 @@ public class MenuFrame extends JFrame{
         comprar.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-            	goToComprasFrame(funcionario);
+            	goToComprasFrame();
             }
         });
         comprar.setBackground(new Color(130, 87, 229));
@@ -243,25 +245,25 @@ public class MenuFrame extends JFrame{
 	
 	private void goToProdutoFrame(){
 		this.dispose();
-		SwingUtilities.invokeLater(() -> new CadastrarProdutoFrame());
+		SwingUtilities.invokeLater(() -> new CadastrarProdutoFrame(funcionario));
 	}
 	
 	private void goToFuncionarioFrame(){
 		this.dispose();
-		SwingUtilities.invokeLater(() -> new CadastrarFuncionarioFrame());
+		SwingUtilities.invokeLater(() -> new CadastrarFuncionarioFrame(funcionario));
 	}
 	
-	private void goToBuscarProdutoFrame(FuncionarioModel funcionario){
+	private void goToBuscarProdutoFrame(){
 		this.dispose();
 		SwingUtilities.invokeLater(() -> new BuscarProdutoFrame(funcionario));
 	}
 	
-	private void goToBuscarFuncionarioFrame(FuncionarioModel funcionario){
+	private void goToBuscarFuncionarioFrame(){
 		this.dispose();
 		SwingUtilities.invokeLater(() -> new BuscarFuncionarioFrame(funcionario));
 	}
 	
-	private void goToComprasFrame(FuncionarioModel funcionario){
+	private void goToComprasFrame(){
 		this.dispose();
 		SwingUtilities.invokeLater(() -> new ComprasSectionFrame(funcionario));
 	}

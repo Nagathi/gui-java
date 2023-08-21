@@ -16,6 +16,7 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.ProdutoService;
 import model.FuncionarioModel;
@@ -29,20 +30,22 @@ public class BuscarProdutoFrame extends JFrame{
     private JButton buscar;
     private JButton editar;
     private ProdutoModel produto;
+    FuncionarioModel funcionario;
     
     public BuscarProdutoFrame(FuncionarioModel funcionario) {
+    	this.funcionario = funcionario;
     	this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setTitle("Sistema PDV");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.getContentPane().setBackground(new Color(50, 50, 50));
         this.setLayout(new GridBagLayout());
 
-        this.renderizarComponentes(funcionario);
+        this.renderizarComponentes();
 
         this.setVisible(true);
     }
 
-    private void renderizarComponentes(FuncionarioModel funcionario) {
+    private void renderizarComponentes() {
     	if(funcionario.getTipo().equals("gerente")) {
     		showFullFrame();
     	}else {
@@ -102,6 +105,22 @@ public class BuscarProdutoFrame extends JFrame{
         gbc.gridy = 2;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         this.add(buscar, gbc);
+        
+        JButton voltar = new JButton("Voltar ao Menu");
+        voltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goToMenu();
+            }
+        });
+    	voltar.setBackground(new Color(130, 87, 229));
+    	voltar.setPreferredSize(new Dimension(300, 30));
+    	voltar.setForeground(new Color(255, 255, 255));
+    	voltar.setBorder(null);
+    	gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.add(voltar, gbc);
     }
     
     public void showFullFrame(){
@@ -157,6 +176,18 @@ public class BuscarProdutoFrame extends JFrame{
         editar.setForeground(new Color(255, 255, 255));
         editar.setBorder(null);
         editar.addActionListener(e -> editarProduto());
+        
+        JButton voltar = new JButton("Voltar ao Menu");
+        voltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goToMenu();
+            }
+        });
+    	voltar.setBackground(new Color(130, 87, 229));
+    	voltar.setPreferredSize(new Dimension(300, 30));
+    	voltar.setForeground(new Color(255, 255, 255));
+    	voltar.setBorder(null);
 
         gbc.gridx = 0;
         gbc.gridy = 2;
@@ -192,6 +223,12 @@ public class BuscarProdutoFrame extends JFrame{
         gbc.fill = GridBagConstraints.NONE;
         gbc.anchor = GridBagConstraints.CENTER;
         this.add(editar, gbc);
+        gbc.gridx = 0;
+        gbc.gridy = 6;
+        gbc.gridwidth = 2;
+        gbc.fill = GridBagConstraints.NONE;
+        gbc.anchor = GridBagConstraints.CENTER;
+        this.add(voltar, gbc);
     }
 
     private void buscarProduto(String codigo) {
@@ -205,6 +242,11 @@ public class BuscarProdutoFrame extends JFrame{
         } else {
             JOptionPane.showMessageDialog(null, "Produto não encontrado");
         }
+    }
+    
+    private void goToMenu() {
+    	this.dispose();
+    	SwingUtilities.invokeLater(() -> new MenuFrame(this.funcionario));
     }
     
     private void buscarProdutoOption(String codigo) {

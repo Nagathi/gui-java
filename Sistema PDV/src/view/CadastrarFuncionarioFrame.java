@@ -17,6 +17,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.FuncionarioService;
 import model.FuncionarioModel;
@@ -38,8 +39,10 @@ public class CadastrarFuncionarioFrame extends JFrame{
 	private JLabel confirmarSenha;
 	private JPasswordField inputConfirmarSenha;
 	private JButton cadastrar;
+	private FuncionarioModel funcionario;
 	
-	public CadastrarFuncionarioFrame() {
+	public CadastrarFuncionarioFrame(FuncionarioModel funcionario) {
+		this.funcionario = funcionario;
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
 	    this.getContentPane().setBackground(new Color(50, 50, 50));
 	    this.setLayout(new GridBagLayout());
@@ -212,9 +215,30 @@ public class CadastrarFuncionarioFrame extends JFrame{
         gbc.fill = GridBagConstraints.HORIZONTAL;
         this.add(cadastrar, gbc);
         
+        JButton voltar = new JButton("Voltar ao Menu");
+        voltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goToMenu();
+            }
+        });
+    	voltar.setBackground(new Color(130, 87, 229));
+    	voltar.setPreferredSize(new Dimension(300, 30));
+    	voltar.setForeground(new Color(255, 255, 255));
+    	voltar.setBorder(null);
+    	gbc.gridx = 0;
+        gbc.gridy = 9;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        this.add(voltar, gbc);
+        
+    }
+    
+    private void goToMenu() {
+    	this.dispose();
+    	SwingUtilities.invokeLater(() -> new MenuFrame(this.funcionario));
     }
 
-	protected void cadastrar(FuncionarioModel funcionario) {
+	private void cadastrar(FuncionarioModel funcionario) {
 		FuncionarioService s = new FuncionarioService();
 		boolean status = s.insertFuncionario(funcionario);
 		if(status) {

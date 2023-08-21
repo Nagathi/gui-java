@@ -24,13 +24,19 @@ public class ComprasSectionFrame extends JFrame {
 
     public ComprasSectionFrame(FuncionarioModel funcionario) {
     	this.funcionario = funcionario;
-    	this.setTitle("Registro de Compras");
-    	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        this.setTitle("Sistema PDV");
+        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.getContentPane().setBackground(new Color(50, 50, 50));
         this.setLayout(new GridBagLayout());
 
-        JPanel panel = new JPanel(new BorderLayout());
+        renderizarComponentes();
+        
+        setVisible(true);
+    }
+    
+    public void renderizarComponentes(){
+    	JPanel panel = new JPanel(new BorderLayout());
 
         tableModel = new DefaultTableModel();
         tableModel.addColumn("Código");
@@ -46,8 +52,7 @@ public class ComprasSectionFrame extends JFrame {
         inputPanel.setBackground(new Color(50, 50, 50));
 
         codigoField = new JTextField(10);
-        nomeField = new JTextField(20);
-        precoField = new JTextField(10);
+        codigoField.setPreferredSize(new Dimension(200, 30));
         
         codigo = new JLabel("Código:");
         codigo.setForeground(new Color(255, 255, 255));
@@ -62,6 +67,10 @@ public class ComprasSectionFrame extends JFrame {
                 addProduto(codigoField.getText());
             }
         });
+        addButton.setBackground(new Color(130, 87, 229));
+        addButton.setPreferredSize(new Dimension(200, 30));
+        addButton.setForeground(new Color(255, 255, 255));
+        addButton.setBorder(null);
         inputPanel.add(addButton);
 
         totalLabel = new JLabel("Total: R$ 0.00");
@@ -76,13 +85,33 @@ public class ComprasSectionFrame extends JFrame {
                 realizarCompra();
             }
         });
-
+        realizarCompraButton.setBackground(new Color(130, 87, 229));
+        realizarCompraButton.setPreferredSize(new Dimension(200, 30));
+        realizarCompraButton.setForeground(new Color(255, 255, 255));
+        realizarCompraButton.setBorder(null);
         inputPanel.add(realizarCompraButton);
+        
+        JButton voltar = new JButton("Voltar ao Menu");
+        voltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goToMenu();
+            }
+        });
+    	voltar.setBackground(new Color(130, 87, 229));
+    	voltar.setPreferredSize(new Dimension(200, 30));
+    	voltar.setForeground(new Color(255, 255, 255));
+    	voltar.setBorder(null);
+        inputPanel.add(voltar);
         
         panel.add(inputPanel, BorderLayout.NORTH);
         
         this.add(panel);
-        setVisible(true);
+    }
+    
+    private void goToMenu() {
+    	this.dispose();
+    	SwingUtilities.invokeLater(() -> new MenuFrame(this.funcionario));
     }
     
     private void realizarCompra() {

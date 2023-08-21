@@ -114,6 +114,12 @@ public class AuthFrame extends JFrame{
         this.add(jButtonEntrar, gbc);
 
         jButtonEsqueceuSenha = new JButton("Esqueci a Senha");
+        jButtonEsqueceuSenha.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            	goToAlterarSenhaFrame();
+            }
+        });
         jButtonEsqueceuSenha.setBackground(new Color(180, 0, 0));
         jButtonEsqueceuSenha.setForeground(new Color(255, 255, 255));
         jButtonEsqueceuSenha.setPreferredSize(new Dimension(200, 30));
@@ -136,5 +142,10 @@ public class AuthFrame extends JFrame{
 			JOptionPane.showMessageDialog(null, "Usuário ou senha incorretas");
 		}
 		
+	}
+	
+	public void goToAlterarSenhaFrame(){
+		this.dispose();
+		SwingUtilities.invokeLater(() -> new AlterarSenhaFrame());
 	}
 }

@@ -118,4 +118,25 @@ public class FuncionarioService {
         }
         return false;
     }
+	
+	public boolean alterarSenha(FuncionarioModel funcionario) {
+        try {
+            Connection conn = SQLiteConnection.connect();
+            if (conn != null) {
+                String updateQuery = "UPDATE funcionarios SET senha = ? WHERE codigo = ?";
+                PreparedStatement preparedStatement = conn.prepareStatement(updateQuery);
+                preparedStatement.setString(1, funcionario.getSenha());
+                preparedStatement.setString(2, funcionario.getCodigo());
+
+                int rowsAffected = preparedStatement.executeUpdate();
+                preparedStatement.close();
+                conn.close();
+
+                return rowsAffected > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }

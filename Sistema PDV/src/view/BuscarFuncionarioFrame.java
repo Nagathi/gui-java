@@ -5,12 +5,15 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 
 import controller.FuncionarioService;
 import model.FuncionarioModel;
@@ -28,18 +31,19 @@ public class BuscarFuncionarioFrame extends JFrame{
     private FuncionarioModel funcionario;
     
 	public BuscarFuncionarioFrame(FuncionarioModel funcionario) {
+		this.funcionario = funcionario;
 		this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         this.setTitle("Sistema PDV");
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         this.getContentPane().setBackground(new Color(50, 50, 50));
         this.setLayout(new GridBagLayout());
 
-        this.renderizarComponentes(funcionario);
+        this.renderizarComponentes();
 
         this.setVisible(true);
 	}
 	
-	private void renderizarComponentes(FuncionarioModel funcionario) {
+	private void renderizarComponentes() {
 		GridBagConstraints gbc = new GridBagConstraints();
 	    gbc.insets = new Insets(10, 10, 10, 10);
 	
@@ -107,6 +111,18 @@ public class BuscarFuncionarioFrame extends JFrame{
 	    editar.setForeground(new Color(255, 255, 255));
 	    editar.setBorder(null);
 	    editar.addActionListener(e -> editarFuncionario());
+	    
+	    JButton voltar = new JButton("Voltar ao Menu");
+        voltar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                goToMenu();
+            }
+        });
+    	voltar.setBackground(new Color(130, 87, 229));
+    	voltar.setPreferredSize(new Dimension(300, 30));
+    	voltar.setForeground(new Color(255, 255, 255));
+    	voltar.setBorder(null);
 	
 	    gbc.gridx = 0;
 	    gbc.gridy = 2;
@@ -169,7 +185,19 @@ public class BuscarFuncionarioFrame extends JFrame{
 	    gbc.fill = GridBagConstraints.NONE;
 	    gbc.anchor = GridBagConstraints.CENTER;
 	    this.add(editar, gbc);
+	    
+	    gbc.gridx = 0;
+	    gbc.gridy = 9;
+	    gbc.gridwidth = 2;
+	    gbc.fill = GridBagConstraints.NONE;
+	    gbc.anchor = GridBagConstraints.CENTER;
+	    this.add(voltar, gbc);
 	 }
+	
+	private void goToMenu() {
+    	this.dispose();
+    	SwingUtilities.invokeLater(() -> new MenuFrame(this.funcionario));
+    }
 	
 	private void buscarFuncionario(String codigo) {
 		FuncionarioService s = new FuncionarioService();
